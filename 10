@@ -1,0 +1,90 @@
+EXPERIMENT NO:7 
+TITLE: CONGESTION CONTROL USING LEAKY BUCKET ALGORITHM 
+Algorithm: 
+1. Read The Data For Packets 
+2. Read The Queue Size 
+3. Divide the Data into Packets 
+4. Assign the random Propagation delays for each packets to input into the bucket (input_packet). 
+5. Wlile((Clock++<5*total_packets) and (out_packets< total_paclets)) 
+a. if (clock == input_packet) 
+i. insert into Queue 
+b. if (clock % 5 == 0 ) 
+i. Remove paclet from Queue 
+6. END 
+PROGRAMME : 
+package leacky; 
+import java.util.Scanner; 
+public class Leacky { 
+public static void main(String[] args) { 
+Scanner sc = new Scanner(System.in); 
+int bcktsize, iter, rate, line, total = 0; 
+int[] pkt = new int[25]; 
+System.out.print("Enter the bucket size and output rate(both in MB):"); 
+bcktsize = sc.nextInt(); 
+rate = sc.nextInt(); 
+System.out.println("Enter the number of input lines"); 
+line = sc.nextInt(); 
+System.out.println("Enter input packet rate of " + line + " lines"); 
+for(int i = 0; i < line; i++) { 
+pkt[i] = sc.nextInt(); 
+} 
+System.out.println("Enter the number of iterations"); 
+iter = sc.nextInt(); 
+for(int i = 0; i < iter; i++) { 
+System.out.println("\nIteration " + (i + 1)); 
+for(int j = 0; j < line; j++) { 
+total += pkt[j]; 
+if(total <= bcktsize) { 
+System.out.println("\nInput from line " + (j + 1) + " with rate " 
++ pkt[j] + " is added to the bucket\nCurrent bucket size(Mb) is " + total); 
+} else { 
+total -= pkt[j]; 
+System.out.println("\nInput from line " + (j + 1) + " with rate " 
++ pkt[j] + " is thrown out of bucket\nCurrent bucket size(Mb)is " + total); 
+} 
+} 
+if(total <= rate) { 
+System.out.print("packet sent to outputline at rate " + total); 
+total = 0; 
+System.out.print("current bucket size is " + total); 
+} else { 
+total -= rate; 
+System.out.println("\n---------------------------------"); 
+System.out.println("\npacket sent to output line at rate " + rate + " \n  
+Current bucket size(Mb)is " + total); 
+} 
+} 
+ }  
+ } 
+ 
+OUTPUT: 
+ 
+Enter the bucket size and output rate(both in MB):30 
+10 
+Enter the number of input lines 
+3 
+Enter input packet rate of 3 lines 
+5 
+20 
+15 
+Enter the number of iterations 
+2 
+Iteration 1 
+Input from line 1 with rate 5 is added to the bucket 
+Current bucket size(Mb) is 5 
+Input from line 2 with rate 20 is added to the bucket 
+Current bucket size(Mb) is 25 
+Input from line 3 with rate 15 is thrown out of bucket 
+Current bucket size(Mb)is 25 --------------------------------- 
+packet sent to output line at rate 10 
+ Current bucket size(Mb)is 15 
+Iteration 2 
+Input from line 1 with rate 5 is added to the bucket 
+Current bucket size(Mb) is 20 
+Input from line 2 with rate 20 is thrown out of bucket 
+Current bucket size(Mb)is 20 
+Input from line 3 with rate 15 is thrown out of bucket 
+Current bucket size(Mb)is 20 --------------------------------- 
+packet sent to output line at rate 10 
+Current bucket size(Mb)is 10 
+BUILD SUCCESSFUL (total time: 26 seconds) 
